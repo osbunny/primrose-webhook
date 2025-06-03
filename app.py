@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # あなたのGAS公開URLをここに貼ってください（例として仮URLを入れています）
-GAS_URL = "https://script.google.com/macros/s/AKfycbxSE8z89e5NJFHvUyl3h52hWs4cGdoMCEmvW6kssTQ2_YYclrYR2F4HRkpGD7Sq5yhXvA/exec"
+GAS_URL = "https://script.google.com/macros/s/AKfycby-Jcu-6mLrgNGMHoGavjt9osrY5rv3t21XlnMNKn2qCOb9VOe_T_K_ld6p8kvu86WHcw/exec"
 
 @app.route("/webhook", methods=["POST"])
 def webhook():

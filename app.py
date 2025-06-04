@@ -11,6 +11,10 @@ GAS_URL = "https://script.google.com/macros/s/AKfycby-Jcu-6mLrgNGMHoGavjt9osrY5r
 CALENDAR_ID = "zgmf.x20a.39@gmail.com"
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
+@app.route("/", methods=["GET"])
+def index():
+    return "PRIMROSE Webhook API is running."
+
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.json

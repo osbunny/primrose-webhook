@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import requests
 import os
+import logging
 
 app = Flask(__name__)
 
@@ -40,3 +41,8 @@ def webhook():
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    app.logger.error(f"❌ エラー発生: {e}", exc_info=True)
+    return jsonify({"status": "error", "message": str(e)}), 500

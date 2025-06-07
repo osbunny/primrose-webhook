@@ -45,6 +45,12 @@ def chatgpt_event():
     try:
         data = request.json
         prompt = data.get("prompt")
+
+        #ログ出力（デバッグ用）
+        print(f"prompt = {prompt}")
+        print(f"OPENAI_API_KEY = {OPENAI_API_KEY}")
+        ###
+
         if not prompt:
             return jsonify({"status": "error", "message": "Prompt is required."}), 400
 
@@ -82,6 +88,10 @@ def chatgpt_event():
         return jsonify({"status": "sent", "result": post_response.text})
 
     except Exception as e:
+        import traceback
+        #ログ出力（デバッグ用）
+        traceback.print_exc()
+        #＃＃
         return jsonify({"status": "error", "message": str(e)}), 500
 
 @app.errorhandler(Exception)
@@ -92,4 +102,4 @@ def handle_exception(e):
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port, debug=True)#ログ出力（デバッグ用）

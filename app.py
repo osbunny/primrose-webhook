@@ -2,7 +2,9 @@ from flask import Flask, request, jsonify
 import requests
 import os
 import logging
+import json
 from openai import OpenAI
+from werkzeug.exceptions import HTTPException
 
 app = Flask(__name__)
 
@@ -73,7 +75,7 @@ def chatgpt_event():
         )
 
         arguments = response.choices[0].message.function_call.arguments
-        payload = eval(arguments)
+        payload = json.loads(arguments)
         payload["calendarId"] = CALENDAR_ID
 
         post_response = requests.post("https://primrose-webhook.onrender.com/webhook", json=payload)
@@ -84,8 +86,9 @@ def chatgpt_event():
 
 @app.errorhandler(Exception)
 def handle_exception(e):
-    app.logger.error(f"❌ エラー発生: {e}", exc_info=True)
-    return jsonify({"status": "error", "message": str(e)}), 500
+    if isinstance(e, HTTPException):
+        return jsonify({"error": e.description}), e.code
+    return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
